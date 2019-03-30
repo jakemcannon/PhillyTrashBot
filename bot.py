@@ -20,3 +20,4 @@ for mention in mentions:
 	# print(str(mention.id) + ' - ' +  mention.text)
 	if '#nearme' in mention.text.lower():
 		print('found our keyword!' + mention.text)
+#test
