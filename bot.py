@@ -72,16 +72,15 @@ while True:
 
 
 
-<<<<<<< HEAD
+
 # for mention in mentions:
 # 	# print(str(mention.id) + ' - ' +  mention.text)
 # 	if '#nearme' in mention.text.lower():
 # 		print('found our keyword! ' + mention.text)
-=======
 for mention in mentions:
 	# print(str(mention.id) + ' - ' +  mention.text)
 	if '#nearme' in mention.text.lower():
 		print('found our keyword!' + mention.text)
 #test
 #test t
->>>>>>> 692b622e924b03176025c11cda4fe99ba947b4b8
+
