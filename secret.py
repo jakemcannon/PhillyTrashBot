@@ -1,0 +1,5 @@
+
+CONSUMER_KEY = 'x'
+CONSUMER_SECRET = 'x'
+ACCESS_KEY = 'x'
+ACCESS_SECRET = 'x'
