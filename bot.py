@@ -1,6 +1,7 @@
 import csv
 import time
 import tweepy
+import urllib.parse
 from datetime import datetime
 from distance import return_nearest_location
 from secret import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_KEY, ACCESS_SECRET
@@ -42,7 +43,7 @@ def reply_to_tweets(path):
 		if '#nearme' in mention.full_text.lower():
 			print('found #nearme!', flush=True)
 			print('responding back...', flush=True)
-			api.update_status('@' + mention.user.screen_name + ' test' + ' The nearest location is: ' + path, mention.id)
+			api.update_status('@' + mention.user.screen_name + ' test' + ' The nearest location is: ' + create_url(), mention.id)
 
 
 #currently returns the coordinates but in reverse
@@ -55,16 +56,18 @@ def get_coordinates():
 			coords = (lat, lon)
 	return lat, lon
 
-my_location = get_coordinates()
-# (39.981811, -75.153357)
+def create_url():
+	my_location = get_coordinates()
+	destination = return_nearest_location(my_location)
+	url = "https://www.google.com/maps/dir/?api=1&"
+	params = {'origin': str(my_location[0]) + ',' + str(my_location[1]), 'destination': str(destination[0]) + ',' + str(destination[1])}
+	result = url + urllib.parse.urlencode(params) + '&travelmode=walking'
+	return result
 
-destination = return_nearest_location(my_location)
-path = "https://www.google.com/maps/dir/?api=1&origin=" + str(my_location).replace(" ", "")[1:-1] + "&destination=" + str(destination).replace("'", "").replace(" ", "")[1:-1]
-print(path)
-
+print(create_url())
 
 while True:
-	reply_to_tweets(path)
+	reply_to_tweets(create_url)
 	time.sleep(15)
 
 
