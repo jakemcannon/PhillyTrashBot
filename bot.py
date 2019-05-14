@@ -38,10 +38,11 @@ def reply_to_tweets(path):
 	for mention in reversed(mentions):
 		print(str(mention.id) + ' -' + mention.full_text, flush=True)
 		last_seen_id = mention.id
+		store_last_seen_id(last_seen_id, FILE_NAME)
 		if '#nearme' in mention.full_text.lower():
 			print('found #nearme!', flush=True)
 			print('responding back...', flush=True)
-			api.update_status('@' + mention.user.screen_name + 'test' + '#nearme back to you! The nearest location is: ' + path, mention.id)
+			api.update_status('@' + mention.user.screen_name + ' test' + ' The nearest location is: ' + path, mention.id)
 
 
 #currently returns the coordinates but in reverse
@@ -55,7 +56,7 @@ def get_coordinates():
 	return lat, lon
 
 my_location = get_coordinates()
-# print(coords[0])
+# (39.981811, -75.153357)
 
 destination = return_nearest_location(my_location)
 path = "https://www.google.com/maps/dir/?api=1&origin=" + str(my_location).replace(" ", "")[1:-1] + "&destination=" + str(destination).replace("'", "").replace(" ", "")[1:-1]
