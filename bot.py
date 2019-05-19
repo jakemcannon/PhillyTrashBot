@@ -32,7 +32,7 @@ def store_last_seen_id(last_seen_id, file_name):
 	f_write.close()
 	return
 
-def reply_to_tweets(path):
+def reply_to_tweets():
 	last_seen_id = retrieve_last_seen_id(FILE_NAME)
 	mentions = api.mentions_timeline(last_seen_id, tweet_mode='extended')
 
@@ -40,36 +40,35 @@ def reply_to_tweets(path):
 		print(str(mention.id) + ' -' + mention.full_text, flush=True)
 		last_seen_id = mention.id
 		store_last_seen_id(last_seen_id, FILE_NAME)
-		if '#nearme' in mention.full_text.lower():
+		if mention.coordinates is not None and '#nearme' in mention.full_text.lower():
+			my_location = get_coordinates(mention)
+			url = create_url(my_location)
 			print('found #nearme!', flush=True)
 			print('responding back...', flush=True)
-			api.update_status('@' + mention.user.screen_name + ' test' + ' The nearest location is: ' + create_url(), mention.id)
+			print(mention.coordinates)
+			api.update_status('@' + mention.user.screen_name + ' The nearest waste bin is:' + url, mention.id)
+		else:
+			api.update_status('@' + mention.user.screen_name + ' You did not provide any location data in your tweet. Please read the pinned tweet for instructions!', mention.id)
 
 
 #currently returns the coordinates but in reverse
-def get_coordinates():
-	mentions = api.mentions_timeline(tweet_mode='extended')
-	for mention in mentions:
-		if mention.coordinates is not None and '#nearme' in mention.full_text.lower():
-			lat = mention.coordinates['coordinates'][1]
-			lon = mention.coordinates['coordinates'][0]
-			coords = (lat, lon)
+def get_coordinates(mention):
+	lat = mention.coordinates['coordinates'][1]
+	lon = mention.coordinates['coordinates'][0]
+	coords = (lat, lon)
 	return lat, lon
 
-def create_url():
-	my_location = get_coordinates()
+def create_url(my_location):
 	destination = return_nearest_location(my_location)
 	url = "https://www.google.com/maps/dir/?api=1&"
 	params = {'origin': str(my_location[0]) + ',' + str(my_location[1]), 'destination': str(destination[0]) + ',' + str(destination[1])}
 	result = url + urllib.parse.urlencode(params) + '&travelmode=walking'
 	return result
 
-print(create_url())
 
 while True:
-	reply_to_tweets(create_url)
+	reply_to_tweets()
 	time.sleep(15)
-
 
 
 
