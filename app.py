@@ -46,7 +46,8 @@ def reply_to_tweets():
 			print('found #nearme!', flush=True)
 			print('responding back...', flush=True)
 			print(mention.coordinates)
-			api.update_status('@' + mention.user.screen_name + ' The nearest waste bin is:' + url, mention.id)
+			print(mention.created_at)
+			api.update_status('@' + mention.user.screen_name + ' Here is the nearest waste bin is:' + url + mention.created_at, mention.id)
 		else:
 			api.update_status('@' + mention.user.screen_name + ' You did not provide any location data in your tweet. Please read the pinned tweet for instructions!', mention.id)
 
