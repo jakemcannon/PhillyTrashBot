@@ -2,7 +2,6 @@ import csv
 import time
 import tweepy
 import urllib.parse
-from os import environ
 from datetime import datetime
 from distance import return_nearest_location
 from secrets import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_KEY, ACCESS_SECRET
