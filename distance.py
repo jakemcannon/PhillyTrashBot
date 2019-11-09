@@ -1,6 +1,9 @@
 import csv
 from math import sin, cos, sqrt, atan2, radians
 
+# distance.py returns the
+# what is location?
+
 def haversine(my_location, location):
 	# approximate radius of earth in km
 	R = 6373.0
