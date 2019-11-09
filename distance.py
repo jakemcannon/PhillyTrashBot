@@ -22,21 +22,19 @@ def haversine(my_location, location):
 	distance = R * c
 	return distance
 
-def return_nearest_location(my_location):
+def return_nearest_location_coordinates(my_location):
 	with open('locations.csv', encoding='utf-8-sig') as f:
 		data=[tuple(line) for line in csv.reader(f)]
 
-	shortestRoute = 5000
+	shortestDistance = 5000
 	#coordinates for best location
-	best_location = None
+	result = None
 
 	for location in data:
-		distance = haversine(my_location, location)
+		cur_distance = haversine(my_location, location)
 		# print("distance is " + str(distance))
-		if distance <= shortestRoute:
-			shortestRoute = distance
-			best_location = location
+		if cur_distance <= shortestDistance:
+			shortestDistance = cur_distance
+			result = location
 
-	# print("shortestRoute " + str(shortestRoute))
-	# print("best location is " + str(best_location))
-	return best_location
+	return result
