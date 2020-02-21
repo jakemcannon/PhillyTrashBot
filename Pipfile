@@ -9,6 +9,7 @@ verify_ssl = true
 gunicorn = "*"
 flask = "*"
 tweepy = "*"
+googlemaps = "*"
 
 [requires]
 python_version = "3.6"
